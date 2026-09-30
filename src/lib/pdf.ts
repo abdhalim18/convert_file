@@ -74,7 +74,14 @@ export async function splitPdfEveryPage(file: File): Promise<NamedBlob[]> {
 
 export async function compressPdf(file: File): Promise<Blob> {
   const bytes = await fileToArrayBuffer(file);
-  const doc = await PDFDocument.load(bytes, { updateMetadata: false });
+  const originalDoc = await PDFDocument.load(bytes, { updateMetadata: false });
+  const doc = await PDFDocument.create();
+  
+  if (originalDoc.getPageCount() > 0) {
+    const pages = await doc.copyPages(originalDoc, originalDoc.getPageIndices());
+    pages.forEach((page) => doc.addPage(page));
+  }
+  
   doc.setTitle("");
   doc.setAuthor("");
   doc.setSubject("");

@@ -67,7 +67,61 @@ export async function convertImage(
 export async function compressImage(file: File, quality = 0.6): Promise<NamedBlob> {
   const img = await loadImage(file);
   const canvas = renderToCanvas(img);
-  const format: ImageFormat = file.type === "image/png" ? "image/png" : "image/jpeg";
+  
+  let format: ImageFormat = "image/jpeg";
+  let ext = "jpg";
+
+  if (file.type === "image/png" || file.type === "image/webp") {
+    format = "image/webp";
+    ext = "webp";
+  } else {
+    format = "image/jpeg";
+    ext = "jpg";
+  }
+  
   const blob = await canvasToBlob(canvas, format, quality);
-  return { name: file.name, blob };
+  // Only change extension if we changed format from png to webp
+  const name = file.type === "image/png" ? replaceExtension(file.name, ext) : file.name;
+  
+  return { name, blob };
+}
+
+export async function mergeImages(files: File[], direction: 'vertical' | 'horizontal' = 'vertical'): Promise<NamedBlob> {
+  const images = await Promise.all(files.map(loadImage));
+  const canvas = document.createElement("canvas");
+  
+  let width = 0;
+  let height = 0;
+  
+  if (direction === 'vertical') {
+    width = Math.max(...images.map(img => img.naturalWidth));
+    height = images.reduce((sum, img) => sum + img.naturalHeight, 0);
+  } else {
+    height = Math.max(...images.map(img => img.naturalHeight));
+    width = images.reduce((sum, img) => sum + img.naturalWidth, 0);
+  }
+  
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("Kanvas tidak didukung di browser ini");
+  
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, width, height);
+  
+  let currentX = 0;
+  let currentY = 0;
+  
+  for (const img of images) {
+    if (direction === 'vertical') {
+      ctx.drawImage(img, 0, currentY);
+      currentY += img.naturalHeight;
+    } else {
+      ctx.drawImage(img, currentX, 0);
+      currentX += img.naturalWidth;
+    }
+  }
+  
+  const blob = await canvasToBlob(canvas, "image/jpeg", 0.9);
+  return { name: "gambar-gabungan.jpg", blob };
 }

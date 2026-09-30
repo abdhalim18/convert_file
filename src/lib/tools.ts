@@ -12,6 +12,7 @@ import {
   FileText,
   Presentation,
   UserSquare2,
+  Eraser,
 } from "lucide-react";
 
 export type ToolCategory = "pdf" | "gambar" | "dokumen";
@@ -146,6 +147,26 @@ export const tools: ToolDef[] = [
     status: "available",
     accept: ["image/jpeg", "image/png", "image/webp"],
     multiple: true,
+  },
+  {
+    slug: "merge-jpg",
+    name: "Gabung JPG/PNG",
+    description: "Gabungkan beberapa file gambar menjadi satu gambar panjang (vertikal/horizontal).",
+    icon: Combine,
+    category: "gambar",
+    status: "available",
+    accept: ["image/jpeg", "image/png", "image/webp"],
+    multiple: true,
+  },
+  {
+    slug: "remove-bg",
+    name: "Hapus Background",
+    description: "Hapus latar belakang dari foto secara otomatis dengan AI, dan ganti warnanya.",
+    icon: Eraser,
+    category: "gambar",
+    status: "available",
+    accept: ["image/jpeg", "image/png", "image/webp"],
+    multiple: false,
   },
   {
     slug: "compress-image",

@@ -12,6 +12,8 @@ import { PdfToJpgTool } from "@/components/tools/PdfToJpgTool";
 import { JpgToPdfTool } from "@/components/tools/JpgToPdfTool";
 import { ImageConverterTool } from "@/components/tools/ImageConverterTool";
 import { CompressImageTool } from "@/components/tools/CompressImageTool";
+import { MergeJpgTool } from "@/components/tools/MergeJpgTool";
+import { RemoveBgTool } from "@/components/tools/RemoveBgTool";
 import { WordToPdfTool } from "@/components/tools/WordToPdfTool";
 import { PdfToWordTool } from "@/components/tools/PdfToWordTool";
 import { PdfToPowerpointTool } from "@/components/tools/PdfToPowerpointTool";
@@ -27,6 +29,8 @@ const toolComponents: Record<string, React.ComponentType> = {
   "jpg-to-pdf": JpgToPdfTool,
   "image-converter": ImageConverterTool,
   "compress-image": CompressImageTool,
+  "merge-jpg": MergeJpgTool,
+  "remove-bg": RemoveBgTool,
   "word-to-pdf": WordToPdfTool,
   "pdf-to-word": PdfToWordTool,
   "pdf-to-powerpoint": PdfToPowerpointTool,
