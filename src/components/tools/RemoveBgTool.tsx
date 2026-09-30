@@ -7,7 +7,7 @@ import { FileListItem } from "@/components/FileListItem";
 import { Button } from "@/components/Button";
 import { ErrorBanner } from "@/components/ErrorBanner";
 import { ResultPanel, type ResultFile } from "@/components/ResultPanel";
-import removeBackground from "@imgly/background-removal";
+import { removeBackground } from "@imgly/background-removal";
 
 export function RemoveBgTool() {
   const [file, setFile] = useState<File | null>(null);
